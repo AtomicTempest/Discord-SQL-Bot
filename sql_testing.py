@@ -11,7 +11,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from sql_sdk import create_table, retrieve_data
+from sql import create_table, retrieve_data
 create_table('Test.db', 'Test')
 data = retrieve_data('Test.db', 'Test', 'Title', 'Hello')
 print(data)

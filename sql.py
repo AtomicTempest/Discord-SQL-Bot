@@ -15,23 +15,39 @@ import sqlite3
 import pandas as pd
 
 
-def connect(database_name):
+def connect(database_name: str):
+    """Connects to a database and returns connection object
+
+    :param database_name: Name/Location of database, creates database if it doesn't exist.
+    """
     return sqlite3.connect(database_name)
 
 
-def create_table(db_name, file_name):
+def create_table(db_name: str, file_name: str):
+    """Creates a table in a database, will create database if it doesn't exist
+
+    :param db_name: Name/Location of Database to create table in.
+    :param file_name: File name of CSV File
+    """
     conn = connect(db_name)
     data = pd.read_csv(file_name + '.csv', header=[0],)
     data.to_sql(file_name, conn, if_exists='replace', index=False)
     conn.close()
 
 
-def retrieve_data(db_name, table_name, index_col, index):
+def retrieve_data(db_name: str, table_name: str, search_col: str, to_search: str):
+    """Retrieves data from a table in a database given search parameters
+
+    :param db_name: Name/Location of Database to retrieve from
+    :param table_name: Name of Table to retrieve data from
+    :param search_col: Column to Search for Data
+    :param to_search: information from rows to find
+    :return: returns list of rows that match search (rows are tuples)
+    :rtype: list
+    """
     conn = connect(db_name)
     cursor = conn.cursor()
     with cursor.connection:
-        cursor.execute('SELECT * FROM ' + table_name + ' WHERE ' + index_col + '=\'' + index + '\'')
-    return cursor.fetchone()
+        cursor.execute('SELECT * FROM ' + table_name + ' WHERE ' + search_col + '=\'' + to_search + '\'')
+    return cursor.fetchall()
     conn.close()
-
-# def add_data(db_name, table_name, data_line):

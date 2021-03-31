@@ -48,6 +48,6 @@ def retrieve_data(db_name: str, table_name: str, search_col: str, to_search: str
     conn = connect(db_name)
     cursor = conn.cursor()
     with cursor.connection:
-        cursor.execute('SELECT * FROM ' + table_name + ' WHERE ' + search_col + '=\'' + to_search + '\'')
+        cursor.execute('SELECT * FROM ' + "\"" + table_name + "\"" + ' WHERE ' + "\"" + search_col + "\"" + '=\'' + to_search + '\'')
     return cursor.fetchall()
     conn.close()
